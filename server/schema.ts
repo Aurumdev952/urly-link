@@ -1,5 +1,6 @@
 import { integer, pgTable, serial, varchar, unique } from "drizzle-orm/pg-core";
-
+import { InferModel} from "drizzle-orm"
+import { type } from "os";
 export const users = pgTable(
   "user",
   {
@@ -20,3 +21,5 @@ export const links = pgTable("link", {
   uid: varchar("uid").notNull(),
   user_id: integer("user_id").references(() => users.id),
 });
+
+export type linkType = InferModel<typeof links, "select">

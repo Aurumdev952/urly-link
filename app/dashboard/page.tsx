@@ -1,13 +1,14 @@
-import { getUsers } from "@/server/controllers";
-
+import CreateModal from "@/components/CreateModal";
+import DataTable from "@/components/Table";
+import { getLinkData, getUsers } from "@/server/controllers";
 export default async function Home() {
-  const userrlist = await getUsers();
+
   return (
-    <>
-    <h1>test</h1>
-      {userrlist.map((user) => (
-        <p key={user.id}>{user.email}</p>
-      ))}
-    </>
+    <div>
+      <div className="flex justify-end p-2">
+        <CreateModal />
+      </div>
+      <DataTable />
+    </div>
   );
 }

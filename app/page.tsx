@@ -1,14 +1,18 @@
-"use client";
-
-import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function Index() {
-  const { data, status } = useSession();
   return (
-    <div className="flex flex-col justify-center items-center gap-4 bg-white">
-      {status}
-      {status === "authenticated" && <>{data.user?.email}</>}
-      <button onClick={() => void signIn("google")}>sign in</button>
-    </div>
+    <main>
+      <div className="flex flex-col w-full py-32 justify-center items-center gap-8">
+        <h1 className="text-5xl">Urly</h1>
+        <p>Next Gen Magic Link</p>
+      </div>
+      <div className="flex justify-center gap-4">
+        <Link href={"/dashboard"} className="btn btn-sm">
+          Get Started
+        </Link>
+        <button className="btn btn-sm">Learn more</button>
+      </div>
+    </main>
   );
 }
