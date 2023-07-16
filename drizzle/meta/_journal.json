@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1689452243257,
+      "tag": "0000_next_sauron",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1689456473406,
+      "tag": "0001_cloudy_jazinda",
+      "breakpoints": true
+    }
+  ]
+}
