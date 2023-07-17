@@ -23,3 +23,4 @@ export const links = pgTable("link", {
 });
 
 export type linkType = InferModel<typeof links, "select">
+export type linkCreateType = InferModel<typeof links, "insert">

@@ -10,35 +10,41 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaRegEdit } from "react-icons/fa";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 const columnHelper = createColumnHelper<linkType>();
 
 const columns = [
   columnHelper.accessor("uid", {
     header: (info) => <h1>link</h1>,
     cell: (info) => (
-      <Link href={`/${info.getValue()}`}>{`/${info.getValue()}`}</Link>
+      <Link
+        target="_blank"
+        href={`/${info.getValue()}`}
+      >{`/${info.getValue()}`}</Link>
     ),
   }),
   columnHelper.accessor("url", {
     header: (info) => <h1>url</h1>,
     cell: (info) => (
-      <Link href={`${info.getValue()}`}>{`${info.getValue()}`}</Link>
+      <Link
+        target="_blank"
+        href={`${info.getValue()}`}
+      >{`${info.getValue()}`}</Link>
     ),
   }),
   columnHelper.accessor("id", {
     header: (info) => <h1>update</h1>,
     cell: (info) => (
-      <button className="btn btn-sm">
-        <FaRegEdit /> update
+      <button className="btn btn-sm btn-info">
+        <FaRegEdit />
       </button>
     ),
   }),
   columnHelper.accessor("id", {
     header: (info) => <h1>delete</h1>,
     cell: (info) => (
-      <button className="btn btn-sm">
-        <RiDeleteBin6Line /> delete
+      <button className="btn btn-sm btn-error">
+        <RiDeleteBin6Line />
       </button>
     ),
   }),
@@ -49,7 +55,8 @@ const DataTable: React.FC = () => {
   const [t_data, setData] = useState<linkType[]>([]);
   const { isLoading, error } = useSWR("/api/data/1", fetcher, {
     onSuccess(data, key, config) {
-      setData(data);
+      setData(data.data);
+      console.log("data", data);
     },
   });
   const table = useReactTable({
@@ -79,7 +86,7 @@ const DataTable: React.FC = () => {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover">
+            <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
