@@ -10,7 +10,9 @@ import { linkCreateType } from "@/server/schema";
 import useSWRMutation from "swr/mutation";
 import { useCopyToClipboard } from "usehooks-ts";
 import z from "zod";
+import { useSession } from "next-auth/react";
 const CreateModal: React.FC = () => {
+  const { data: sessionData } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [next, setNext] = useState(false);
   const [value, setValue] = useState("");
@@ -30,7 +32,7 @@ const CreateModal: React.FC = () => {
       onSuccess(data, key, config) {
         setValue(`http://localhost:3000/${data[0].uid}`);
         setNext(true);
-        mutate("/api/data/1")
+        mutate("/api/data");
       },
     }
   );
@@ -41,7 +43,7 @@ const CreateModal: React.FC = () => {
   function openModal() {
     setNext(false);
     setIsOpen(true);
-    setInput("")
+    setInput("");
   }
 
   return (
@@ -104,12 +106,12 @@ const CreateModal: React.FC = () => {
                             className="btn btn-sm"
                             onClick={async () => {
                               if (input.length > 0) {
-                                const url = z.string().url().parse(input)
+                                const url = z.string().url().parse(input);
                                 if (url) {
                                   await trigger({
                                     uid: createId(),
                                     url: input,
-                                    user_id: 1,
+                                    user_id: sessionData?.user.id,
                                   });
                                 }
                               }

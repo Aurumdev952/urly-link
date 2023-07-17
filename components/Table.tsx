@@ -7,11 +7,14 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaRegEdit } from "react-icons/fa";
 import useSWR, { useSWRConfig } from "swr";
 import UpdateModal from "./UpdateModal";
+import DeleteModal from "./DeleteModal";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 const columnHelper = createColumnHelper<linkType>();
 
 const columns = [
@@ -47,18 +50,15 @@ const columns = [
   }),
   columnHelper.accessor("id", {
     header: (info) => <h1>delete</h1>,
-    cell: (info) => (
-      <button className="btn btn-sm btn-error">
-        <RiDeleteBin6Line />
-      </button>
-    ),
+    cell: (info) => <DeleteModal id={info.getValue()} />,
   }),
 ];
 // @ts-ignore
 const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
 const DataTable: React.FC = () => {
+  const { status } = useSession();
   const [t_data, setData] = useState<linkType[]>([]);
-  const { isLoading, error } = useSWR("/api/data/1", fetcher, {
+  const { isLoading, error } = useSWR("/api/data", fetcher, {
     onSuccess(data, key, config) {
       setData(data.data);
       console.log("data", data);
@@ -69,7 +69,11 @@ const DataTable: React.FC = () => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      redirect("/");
+    }
+  }, [status]);
   return (
     <div className="overflow-x-auto p-2">
       <table className="table">
@@ -101,6 +105,14 @@ const DataTable: React.FC = () => {
           ))}
         </tbody>
       </table>
+      <div className="flex w-full justify-center items-center py-4">
+        {isLoading && (
+          <div className="flex justify-center items-center gap-3">
+            <span className="loading loading-spinner"></span>
+            loading
+          </div>
+        )}
+      </div>
     </div>
   );
 };

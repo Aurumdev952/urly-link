@@ -2,13 +2,11 @@ import { getLinkData } from "@/server/controllers";
 import { getServerSideSession } from "@/utils/auth";
 import { NextResponse } from "next/server";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { user_id: number } }
-) {
+export async function GET(request: Request) {
   const session = await getServerSideSession();
   if (!session) return NextResponse.error();
-  const { user_id } = params;
+  const user_id = session.user.id;
+
   const data = await getLinkData(user_id);
   return NextResponse.json({ data });
 }

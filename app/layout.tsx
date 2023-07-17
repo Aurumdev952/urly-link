@@ -10,8 +10,16 @@ export const metadata: Metadata = {
   description: "next gen magic link",
 };
 import React from "react";
-import { SignInButtonBig, SignInButtonSmall, SignOutButton } from "@/components/AuthButtons";
+import {
+  SignInButtonBig,
+  SignInButtonSmall,
+  SignOutButton,
+} from "@/components/AuthButtons";
 import Link from "next/link";
+import { getServerSideSession } from "@/utils/auth";
+import { useSession } from "next-auth/react";
+import Profile from "@/components/Profile";
+import SideBar from "@/components/SideBar";
 export default function RootLayout({
   children,
 }: {
@@ -46,23 +54,24 @@ export default function RootLayout({
                     </svg>
                   </label>
                 </div>
-                <div className="flex-1 px-2 mx-2"><Link href={"/"}>Urly</Link></div>
+                <div className="flex-1 px-2 mx-2">
+                  <Link href={"/"}>Urly</Link>
+                </div>
                 <div className="flex-none hidden lg:block">
                   <ul className="menu menu-horizontal">
                     {/* Navbar menu content here */}
-                    <li><SignInButtonBig /></li>
+                    <li>
+                      <SignInButtonBig />
+                    </li>
                   </ul>
                 </div>
+                <Profile />
               </div>
               {children}
             </div>
             <div className="drawer-side">
               <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
-              <ul className="menu p-4 w-80 h-full bg-base-200">
-                {/* Sidebar content here */}
-                <li><SignInButtonBig /></li>
-                <li><SignOutButton /></li>
-              </ul>
+              <SideBar />
             </div>
           </div>
         </NextAuthProvider>
