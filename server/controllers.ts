@@ -31,7 +31,11 @@ export const createLink = async (link: InferModel<typeof links, "insert">) => {
 };
 
 export const updateLink = async (link: InferModel<typeof links, "insert">) => {
-  return await db.update(links).set(link).returning();
+  return await db
+    .update(links)
+    .set(link)
+    .where(eq(links.id, link.id ?? 0))
+    .returning();
 };
 
 export const deleteLink = async (id: number) => {

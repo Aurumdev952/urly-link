@@ -41,6 +41,7 @@ const CreateModal: React.FC = () => {
   function openModal() {
     setNext(false);
     setIsOpen(true);
+    setInput("")
   }
 
   return (

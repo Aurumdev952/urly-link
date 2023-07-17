@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaRegEdit } from "react-icons/fa";
 import useSWR, { useSWRConfig } from "swr";
+import UpdateModal from "./UpdateModal";
 const columnHelper = createColumnHelper<linkType>();
 
 const columns = [
@@ -18,6 +19,7 @@ const columns = [
     header: (info) => <h1>link</h1>,
     cell: (info) => (
       <Link
+        className="hover:underline"
         target="_blank"
         href={`/${info.getValue()}`}
       >{`/${info.getValue()}`}</Link>
@@ -27,6 +29,7 @@ const columns = [
     header: (info) => <h1>url</h1>,
     cell: (info) => (
       <Link
+        className="hover:underline"
         target="_blank"
         href={`${info.getValue()}`}
       >{`${info.getValue()}`}</Link>
@@ -34,11 +37,13 @@ const columns = [
   }),
   columnHelper.accessor("id", {
     header: (info) => <h1>update</h1>,
-    cell: (info) => (
-      <button className="btn btn-sm btn-info">
-        <FaRegEdit />
-      </button>
-    ),
+    cell: (info) => {
+      return (
+        <UpdateModal
+          {...info.table.getRowModel().rowsById[info.row.index].original}
+        />
+      );
+    },
   }),
   columnHelper.accessor("id", {
     header: (info) => <h1>delete</h1>,
