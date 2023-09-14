@@ -19,6 +19,7 @@ export const links = pgTable("link", {
   alias: varchar("alias"),
   url: varchar("url").notNull(),
   uid: varchar("uid").notNull(),
+  visits: integer("visits").default(0),
   user_id: integer("user_id").references(() => users.id),
 });
 

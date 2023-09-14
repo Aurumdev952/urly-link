@@ -15,6 +15,13 @@
       "when": 1689456473406,
       "tag": "0001_cloudy_jazinda",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1694720538232,
+      "tag": "0002_icy_vanisher",
+      "breakpoints": true
     }
   ]
 }

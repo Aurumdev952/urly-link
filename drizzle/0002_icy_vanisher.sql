@@ -1,0 +1,1 @@
+ALTER TABLE "link" ADD COLUMN "visits" integer DEFAULT 0;

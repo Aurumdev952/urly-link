@@ -38,6 +38,14 @@ const columns = [
       >{`${info.getValue()}`}</Link>
     ),
   }),
+  columnHelper.accessor("visits", {
+    header: (info) => <h1>number of visitors</h1>,
+    cell: (info) => (
+      <div>
+        <p>{info.getValue()}</p>
+      </div>
+    ),
+  }),
   columnHelper.accessor("id", {
     header: (info) => <h1>update</h1>,
     cell: (info) => {

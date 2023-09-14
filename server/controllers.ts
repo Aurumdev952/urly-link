@@ -20,10 +20,19 @@ export const getLinkData = async (user_id: number) => {
   return await db.select().from(links).where(eq(links.user_id, user_id));
 };
 export const getUrl = async (uid: string) => {
-  return await db
-    .select({ url: links.url })
+  const data = await db
+    .select({ url: links.url, id: links.id, visits: links.visits })
     .from(links)
     .where(eq(links.uid, uid));
+  if (data.length > 0) {
+    await db
+      .update(links)
+      .set({
+        visits: (data[0]?.visits ?? 0) + 1,
+      })
+      .where(eq(links.id, data[0].id));
+  }
+  return data;
 };
 
 export const createLink = async (link: InferModel<typeof links, "insert">) => {
