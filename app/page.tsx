@@ -1,6 +1,5 @@
-import { getServerSideSession } from "@/utils/auth";
+import Features from "@/components/landing/features";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 export default function Index() {
   return (
     <main>
@@ -14,6 +13,7 @@ export default function Index() {
         </Link>
         <button className="btn btn-sm">Learn more</button>
       </div>
+      {/* <Features /> */}
     </main>
   );
 }
