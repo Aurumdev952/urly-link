@@ -1,7 +1,7 @@
 "use client";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiCopy } from "react-icons/bi";
-import { createId } from "@paralleldrive/cuid2";
+import { init } from "@paralleldrive/cuid2";
 
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
@@ -9,14 +9,20 @@ import { useSWRConfig } from "swr";
 import { linkCreateType } from "@/server/schema";
 import useSWRMutation from "swr/mutation";
 import { useCopyToClipboard } from "usehooks-ts";
-import z from "zod";
+import z, { ZodError } from "zod";
 import { useSession } from "next-auth/react";
+
+const createId = init({
+  length: 5,
+});
+
 const CreateModal: React.FC = () => {
   const { data: sessionData } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [next, setNext] = useState(false);
   const [value, setValue] = useState("");
   const [input, setInput] = useState("");
+  const [error, setError] = useState(false);
   const [copy_value, copy] = useCopyToClipboard();
   const { mutate } = useSWRConfig();
   const { trigger, isMutating } = useSWRMutation(
@@ -30,7 +36,9 @@ const CreateModal: React.FC = () => {
     },
     {
       onSuccess(data, key, config) {
-        setValue(`http://localhost:3000/${data[0].uid}`);
+        setValue(
+          `${process.env.VERCEL_URL ?? "http://localhost:3000"}/${data[0].uid}`
+        );
         setNext(true);
         mutate("/api/data");
       },
@@ -100,19 +108,27 @@ const CreateModal: React.FC = () => {
                             placeholder="url..."
                             className="input input-sm input-bordered w-full max-w-xs"
                           />
+                          {error && <p className="text-red-600">invalid url</p>}
                         </div>
                         <div className="flex justify-end w-[20rem]">
                           <button
                             className="btn btn-sm"
                             onClick={async () => {
                               if (input.length > 0) {
-                                const url = z.string().url().parse(input);
-                                if (url) {
-                                  await trigger({
-                                    uid: createId(),
-                                    url: input,
-                                    user_id: sessionData?.user.id,
-                                  });
+                                setError(false);
+                                try {
+                                  const url = z.string().url().parse(input);
+                                  if (url) {
+                                    await trigger({
+                                      uid: createId(),
+                                      url: input,
+                                      user_id: sessionData?.user.id,
+                                    });
+                                  }
+                                } catch (err) {
+                                  if (err instanceof ZodError) {
+                                    setError(true);
+                                  }
                                 }
                               }
                             }}

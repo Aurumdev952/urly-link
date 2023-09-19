@@ -1,17 +1,10 @@
 "use client";
-import { AiOutlinePlus } from "react-icons/ai";
-import { BiCopy } from "react-icons/bi";
-import { createId } from "@paralleldrive/cuid2";
-
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { useSWRConfig } from "swr";
-import { linkCreateType, linkType } from "@/server/schema";
 import useSWRMutation from "swr/mutation";
-import { useCopyToClipboard } from "usehooks-ts";
-import z from "zod";
-import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
+
 const DeleteModal: React.FC<{ id: number }> = ({ id }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { mutate } = useSWRConfig();
@@ -26,7 +19,7 @@ const DeleteModal: React.FC<{ id: number }> = ({ id }) => {
     },
     {
       onSuccess(data, key, config) {
-        mutate("/api/data/1");
+        mutate("/api/data");
         setIsOpen(false);
       },
     }

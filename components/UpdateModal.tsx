@@ -26,7 +26,7 @@ const UpdateModal: React.FC<linkType> = ({ id, url, alias, uid, user_id }) => {
     },
     {
       onSuccess(data, key, config) {
-        mutate("/api/data/1");
+        mutate("/api/data");
         setIsOpen(false);
       },
     }
@@ -105,7 +105,6 @@ const UpdateModal: React.FC<linkType> = ({ id, url, alias, uid, user_id }) => {
                                 user_id,
                                 alias,
                                 id,
-
                               });
                             }
                           }
