@@ -8,7 +8,6 @@ import { Fragment, useState } from "react";
 import { useSWRConfig } from "swr";
 import { linkCreateType, linkType } from "@/server/schema";
 import useSWRMutation from "swr/mutation";
-import { useCopyToClipboard } from "usehooks-ts";
 import z from "zod";
 import { FaRegEdit } from "react-icons/fa";
 const UpdateModal: React.FC<linkType> = ({ id, url, alias, uid, user_id }) => {
